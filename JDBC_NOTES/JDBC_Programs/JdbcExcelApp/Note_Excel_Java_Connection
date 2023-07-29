@@ -1,0 +1,7 @@
+1.We need to Download a jar file for Excel database type:-- EXCEL_JDBC40.jar (HXXT website)
+2.url:-"jdbc:Excel///<loacation where the file of .xls present>"
+3.query == "select * from <workbook.sheetName> where ...."
+4.remaining all things are same as a database.
+5.getConnection();
+6.use Statement();
+7.get Result in ResultSet();

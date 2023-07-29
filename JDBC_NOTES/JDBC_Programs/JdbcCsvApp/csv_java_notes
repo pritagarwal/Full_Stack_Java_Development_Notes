@@ -1,0 +1,4 @@
+1.Download CSV jar file --- Text_Jdbc42.jar
+2.url ="jdbc:Text:///<location where the file is present>"
+3.sql="select * from <name of file.csv>";
+4.note:- the name of the file rep the table name of data.
