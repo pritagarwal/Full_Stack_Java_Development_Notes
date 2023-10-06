@@ -1,0 +1,93 @@
+1.@Entity             --- > Marks that this class is participating in orm
+
+2.@Id                 ----> Mark the perticular field as pk
+
+3.@Table(name='')     ----> Specify the table name in database
+
+4.@Column(name,length)----> Mark the column name of perticular field in db 
+
+note:- If you want that default name name of class and field to be as table and column name in db the just write
+@Entity and @ID
+
+5.@DynamicInsert/@DynamicUpdate(value=true)  ----> Marks that sql query generated will be dynamic based on values we set on obj that col will only be updated or inserted
+
+6.@GenericGenerator(name="xyz",strategy="")  ---->Hibernate Specific algorithm for pk generation
+  @GeneratedValue(generator="zyx")
+
+7.@GenericGenerator(name="xyz",strategy="sequence",parameters={@parameter(name="",value="")}) --> user made sequence table if we want to use along with hibernatev Sequence algorithm use this annotation
+  @GeneratedValue(generator="xyz")
+
+8.@GeneratedValue(strategy=GenerationType.IDENTITY/SEQUENCE/AUTO) ---> JPA specific generating algorithm
+
+9.@SequenceGenerator(name="", sequence_name="",initialValue=X,allocatedSize=Y) --> user specific sequence table in oracle DB use along with JPA specific SEQUENCE ALGORITHM
+  @GeneratedValue(generator="",strategy=GenerationType.SEQUENCE)
+
+10.@Embeddable --> Tells that this class is used as a Composite pk (The class must implements Serialiable)
+
+11.@EmbeddedId --> Tells that this is a composite pk value
+
+12.@Version    --> Tells that the perticular field is used as version control.On every modification of record this field autoIncrement by 1
+
+13.@Cache(usage= CacheConcurrencyStrategy.READ_ONLY...) --> if you are using l2-cache then in mappng class you need to tell the usage of perticular object
+
+14.@CreationTimeStamp --> Saving the time of creation of object
+
+15.@UpdateTimeStamp  --> saving the last time you updated the value in object
+
+16.@Lob --> (byte[] + @Lob) means BLOB / (char[] + @Lob) means CLOB
+
+17.@NamedQuery(name="",query="") ---> For named HQL Query
+
+18.@NamedNativeQuery(name="",query="") ---> for NativeSqlQuery
+
+19.@SQLDelete(sql="<query to execute>") ---> for soft deletion 
+
+20.@FilterDef(name = "FILTER_BANKACCOUNT_STATUS", parameters = 
+             {
+                 @ParamDef(type = "string", name = "accType1"),
+                 @ParamDef(type = "string", name = "accType2")
+             }
+    )
+
+   @Filter(name = "FILTER_BANKACCOUNT_STATUS", condition = "STATUS NOT IN(:accType1,:accType2)")
+
+21.@SQLDelete(sql = "UPDATE bankaccount SET status='closed' WHERE accno=?")   --> when we call session.delete() this query will get execute
+
+22.@Where(clause = "STATUS NOT IN ('blocked','closed')")   ---> jis pojo obj ke lie likhoge uske har sql query me add hoga ye condition.we cant enable or deisaple it
+
+23.@Embedded / @Embeddable --- > used in adv-ormapping for component property (Composite attribute)
+
+24.@Inheritance(strategy = InheritanceType.SINGLE_TABLE)    ---> used for Inheritance mapping in single table format
+   @Inheritance(strategy = InheritanceType.JOINED)          ---> for each parent and child seperate table is created and joined using fk-pk
+   @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) ---> table created only for child and all parent property is represented as col in child table
+
+   @DiscriminatorColumn(name="payment_mode",discriminatorType = DiscriminatorType.STRING) ---> used when single table is used in inheritance mapping 
+   @DiscriminatorValue("CHEQUE")                                                          ---> used above child class to fill value in discriminator col in parent table
+
+
+
+25.Annotation for Collection mapping
+  
+   a. @ElementCollection=> Specifying element column name.
+   b. @CollectionTable => Specify child table name and FK column name.
+   c. @OrderColumn => To specify the list index column name.
+
+        @ElementCollection
+	@Column(name = "friend_name")
+	@CollectionTable(name = "EMP_FRNDS", joinColumns = @JoinColumn(name = "emp_id", referencedColumnName = "eid"))
+	@OrderColumn(name = "friend_no") 
+	@ListIndexBase(value = 1) // to store index of list start from 1
+        private List<String> friendList;
+
+
+  
+   d. @MapKeyColumn => To specify the map index column name.
+
+        @ElementCollection
+	@Column(name = "account_number")
+	@CollectionTable(name = "EMP_ACCOUNTS", joinColumns = @JoinColumn(name = "emp_id", referencedColumnName = "eid"))
+	@MapKeyColumn(name = "bankName", length = 10) // here key will be stored and value will be stored in account_number col
+        private Map<String, Long> bankAccounts;
+
+
+
